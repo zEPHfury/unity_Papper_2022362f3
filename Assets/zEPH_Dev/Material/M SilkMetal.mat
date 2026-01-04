@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M SilkMetal
+  m_Shader: {fileID: 4800000, guid: c21090696ea3b0a428f4bf1051fea901, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: b4c26700fe5830e489967349577c98be, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: b3e2a73752e22634f834228c78586ddf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMAMap:
+        m_Texture: {fileID: 2800000, guid: 054c056b171e16b4f8f56cf9e48e164e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _AlphaClipChannel: 0
+    - _AnisoDirX: 0
+    - _AnisoDirY: 8
+    - _AnisoOffset: 0
+    - _AnisoSpread: 20
+    - _AnisoStrength: 0.5
+    - _BaseColorBrightness: 1
+    - _BaseColorSaturation: 1
+    - _BumpScale: 1
+    - _Cull: 0
+    - _Cutoff: 0.3
+    - _OcclusionStrength: 1
+    - _UseNormalMap: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _AnisoColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

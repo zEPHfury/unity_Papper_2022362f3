@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: e98c466d190a36c4ab0a3e61517624bf
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _AlbedoMap: {instanceID: 0}
+  - _ORMAMap: {instanceID: 0}
+  - _NormalMap: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: URP_Water_Depth_Debug
+  m_Shader: {fileID: 4800000, guid: 64b98acdba07be6458c8d5163112f87e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 8bc7797bb879de74bb021c4f099f7f02, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BaseOpacity: 1
+    - _BumpScale: 1
+    - _DepthExp: 0.65
+    - _DepthMaxDistance: 0.2
+    - _DistortionStrength: 0.0075
+    - _FoamDistance: 0.4
+    - _FoamNoiseScale: 0.1
+    - _FresnelPower: 3.23
+    - _OpacityDepthDistance: 1
+    - _OpacityExp: 0.13
+    - _ReflectionStrength: 0.5
+    - _ViewCorrection: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _DeepColor: {r: 0.14912379, g: 0.32704395, b: 0.31919453, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShallowColor: {r: 0.2917408, g: 0.6226415, b: 0.60804296, a: 1}
+    - _Speed: {r: 0.01, g: 0.01, b: 0, a: 0}
+  m_BuildTextureStacks: []

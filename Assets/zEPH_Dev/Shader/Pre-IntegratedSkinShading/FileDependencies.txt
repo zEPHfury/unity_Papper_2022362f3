@@ -1,0 +1,57 @@
+# 文件依赖性与作用分析
+
+以下是关于本文件夹内核心文件的作用以及它们之间依赖关系的详细分析：
+
+## 1. S_Pre-IntegratedSSS.shader
+*   **作用**: 核心**皮肤渲染 Shader**。
+    *   实现了**预积分次表面散射 (Pre-Integrated Subsurface Scattering)** 技术。
+    *   包含两个主要的 Pass：`ForwardLit`（处理光照、SSS、透射）和 `ShadowCaster`（投射阴影）。
+    *   实现了基于曲率的 LUT 采样、法线模糊 (Normal Blur) 以及透射 (Transmission) 效果。
+*   **依赖性**:
+    *   **外部资源**: 强依赖一张 **Skin LUT 贴图** (`_SkinLut`)，这张图通常由 `C#S_SkinLutTool.cs` 生成。
+    *   **URP 库**: 依赖 Unity URP 的 Shader 库 (`Core.hlsl`, `Lighting.hlsl`, `Shadows.hlsl`)。
+    *   **独立性**: 在代码层面它是独立的，没有引用 `SkinCommon.hlsl`。它使用自己的算法（基于 LUT 查表）来模拟散射。
+
+## 2. SkinCommon.hlsl
+*   **作用**: **HLSL 公共函数库**。
+    *   定义了核心数学函数 `EvalBurleyDiffusionProfile`，用于计算 Burley (Disney) 归一化扩散分布轮廓。这是物理基础皮肤渲染的核心数学模型。
+*   **依赖性**:
+    *   **Core RP 库**: 依赖 `Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl`。
+*   **被依赖**:
+    *   被 `SkinLut.shader` 引用。
+    *   被 `DrawDiffusionProfile.shader` 引用。
+
+## 3. SkinLut.shader
+*   **作用**: 用于 **GPU 端生成皮肤 LUT** 的 Shader。
+    *   利用 `SkinCommon.hlsl` 中的 Burley 模型，通过像素着色器计算并生成一张查找表（LUT）。
+*   **依赖性**:
+    *   **代码引用**: 显式 `#include "SkinCommon.hlsl"`。
+    *   **URP 库**: 依赖 `Core.hlsl`。
+
+## 4. DrawDiffusionProfile.shader
+*   **作用**: **可视化/调试 Shader**。
+    *   用于在屏幕上绘制扩散分布曲线（Diffusion Profile）。通常用于编辑器工具中，帮助直观地看到当前散射参数（Shape Param）对应的散射曲线形状。
+*   **依赖性**:
+    *   **代码引用**: 显式 `#include "SkinCommon.hlsl"`。
+    *   **URP 库**: 依赖 `Core.hlsl`。
+
+## 5. C#S_SkinLutTool.cs
+*   **作用**: **Unity 编辑器工具脚本** (`EditorWindow`)。
+    *   提供图形界面 (`Tools/Skin LUT Generator`) 来生成皮肤 LUT 纹理。
+    *   提供两种生成模式：Physics Based（基于物理模拟）和 Gradient Based（基于美术梯度）。
+    *   生成的纹理（`.exr`）直接被 `S_Pre-IntegratedSSS.shader` 用作 `_SkinLut` 属性。
+*   **依赖性**:
+    *   **Unity Editor API**: 依赖 `UnityEditor` 和 `UnityEngine`。
+    *   **关系**: 它是 `S_Pre-IntegratedSSS.shader` 的**配套工具**。Shader 的效果高度依赖于这个工具生成的贴图。
+
+---
+
+## 总结关系图
+
+1.  **渲染流程**:
+    *   `C#S_SkinLutTool.cs` (生成贴图)  -->  `S_Pre-IntegratedSSS.shader` (采样贴图进行渲染)
+
+2.  **辅助/计算流程**:
+    *   `SkinCommon.hlsl` (核心算法)
+        *   --> 被包含于 `SkinLut.shader` (GPU 生成 LUT)
+        *   --> 被包含于 `DrawDiffusionProfile.shader` (可视化曲线)

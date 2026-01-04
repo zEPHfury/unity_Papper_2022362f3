@@ -1,0 +1,38 @@
+* text=auto
+
+# Unity / C# / Shader / 配置（文本统一 LF）
+*.txt text eol=lf
+*.wlt text eol=lf
+*.md text eol=lf
+*.cs      text eol=lf
+*.shader  text eol=lf
+*.cginc   text eol=lf
+*.hlsl    text eol=lf
+*.compute text eol=lf
+*.json    text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.asmdef  text eol=lf
+*.asmref  text eol=lf
+
+# Unity 常见 YAML 文本资产（重要）
+*.unity   text eol=lf
+*.prefab  text eol=lf
+*.meta    text eol=lf
+*.asset   text eol=lf
+*.mat     text eol=lf
+*.lighting text eol=lf
+
+# 常见二进制（避免被当文本处理）
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.tga  binary
+*.psd  binary
+*.fbx  binary
+*.exr  binary
+*.wav  binary
+*.mp3  binary
+*.mp4  binary
+*.mov  binary

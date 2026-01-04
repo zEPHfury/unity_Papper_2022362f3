@@ -1,0 +1,85 @@
+# Unity.gitignore (推荐用于 Unity 工程)
+# 目标：只提交源码/资源/配置；排除自动生成与本机环境文件
+
+############################
+# OS / IDE / Editor
+############################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.sln
+*.unityproj
+*.pidb
+*.booproj
+*.svd
+*.VC.db
+
+# Rider / JetBrains
+.idea/
+*.DotSettings.user
+
+############################
+# Unity generated
+############################
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Addressables build output (如果你把构建产物放在默认目录，建议忽略；按需调整)
+ServerData/
+
+# AssetBundle 输出目录（如果你的项目有自定义输出目录，按需加）
+AssetBundles/
+
+############################
+# Unity cache / local settings
+############################
+UserSettings/
+LocalSettings/
+
+# 如果你不想提交 Package Manager 的本地缓存，可忽略（通常不需要提交）
+# [Pp]ackages/packages-lock.json   # 注意：一般建议提交 packages-lock.json 以保证依赖一致；按团队约定
+
+############################
+# Crash / profiling / debug
+############################
+sysinfo.txt
+*.stackdump
+
+############################
+# IL2CPP / build artifacts
+############################
+il2cpp/
+*.apk
+*.aab
+*.ipa
+*.app
+*.exe
+*.pdb
+*.mdb
+
+############################
+# Unity meta (注意：不要忽略 .meta)
+############################
+# Unity 需要 .meta 文件来保持资源 GUID，一般必须提交
+# !**/*.meta
+
+############################
+# Git LFS 建议（不是 ignore，而是提示）
+############################
+# 大文件（贴图/音频/视频/模型等）建议用 Git LFS：
+# git lfs track "*.psd" "*.tga" "*.fbx" "*.wav" "*.mp4"

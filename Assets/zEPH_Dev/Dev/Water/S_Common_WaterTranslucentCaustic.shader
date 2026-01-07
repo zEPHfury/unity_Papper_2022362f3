@@ -146,9 +146,7 @@ Shader "Custom/Common Water Translucent Caustic"
 
                 DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 6); // 光照贴图 UV 或 球谐光照数据
                 
-                #if defined(FOG_FRAGMENT)
-                    float fogCoord : TEXCOORD7; // 雾效坐标
-                #endif
+                float fogCoord : TEXCOORD7; // 雾效坐标
 
                 #if defined(_EMISSION)
                     float2 uvEmission : TEXCOORD8; // 自发光 UV
@@ -201,9 +199,7 @@ Shader "Custom/Common Water Translucent Caustic"
                 #endif
                 
                 // 计算雾效因子
-                #if defined(FOG_FRAGMENT)
-                    OUT.fogCoord = ComputeFogFactor(OUT.positionCS.z);
-                #endif
+                OUT.fogCoord = ComputeFogFactor(OUT.positionCS.z);
 
                 return OUT;
             }

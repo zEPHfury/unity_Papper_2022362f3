@@ -111,9 +111,7 @@ half4 CalculateLitColor(Varyings IN, SurfaceData surfaceData)
 #endif
 
     // 4. 雾效
-#if defined(FOG_FRAGMENT)
     color.rgb = MixFog(color.rgb, IN.fogCoord);
-#endif
 
     return color;
 }

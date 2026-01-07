@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Common Snow
+  m_Shader: {fileID: 4800000, guid: 0e43e99dbd9ea09478c7b7a130ce9215, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _NORMALMAP
+  - _SPARKLE
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 7fc209fcaf506fd44bc0208093e734bb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: ca8cecf661165c74497ff2dda91e6146, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMAMap:
+        m_Texture: {fileID: 2800000, guid: 334c01f27eb928f40be7fc0d1c7ff01d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BaseColorBrightness: 1
+    - _BaseColorSaturation: 1
+    - _BumpScale: 1
+    - _Cull: 2
+    - _EnvironmentReflections: 1
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _SmoothnessMax: 0
+    - _SmoothnessMin: 0
+    - _SparkleIntensity: 27.3
+    - _SparkleScale: 185
+    - _SparkleThreshold: 0.058
+    - _SpecularHighlights: 1
+    - _UseBakedSparkle: 0
+    - _UseNormalMap: 1
+    - _UseSparkle: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BakedSparkleColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

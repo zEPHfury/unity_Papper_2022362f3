@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_S_Common_Hair Bak
+  m_Shader: {fileID: 4800000, guid: b56afaa28d20e41438b038e760869633, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: d6b5bb0cb32960a4fa1c2c7daacb8ce2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DepthMap:
+        m_Texture: {fileID: 2800000, guid: f1f53e7d6a87e224abeb16ca860ee7df, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IDMap:
+        m_Texture: {fileID: 2800000, guid: 631b19486a3bef7429c93dd23b8a34de, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RootMap:
+        m_Texture: {fileID: 2800000, guid: b831ad8c7f018d64495b38ec77d85b2e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShiftMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Cull: 0
+    - _Cutoff: 0.65
+    - _EdgeSoftness: 0.535
+    - _IDVariation: 0.2
+    - _OcclusionStrength: 0.5
+    - _RimIntensity: 1
+    - _RimPower: 3
+    - _ShiftScale: 0.1
+    - _SpecularExponent1: 512
+    - _SpecularExponent2: 50
+    - _SpecularShift1: 0
+    - _SpecularShift2: 0.1
+    - _SphereNormalSmoothness: 0.5
+    - _TransmissionExponent: 20
+    - _TransmissionIntensity: 0.1
+    m_Colors:
+    - _HeadCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RootColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SpecularColor1: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _SpecularColor2: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+    - _TangentA: {r: 0, g: 0, b: 0.15, a: 0}
+    - _TangentB: {r: 0, g: 0, b: -0.15, a: 0}
+    - _TipColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TransmissionColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

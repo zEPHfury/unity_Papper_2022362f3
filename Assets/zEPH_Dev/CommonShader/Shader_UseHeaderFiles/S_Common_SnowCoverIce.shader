@@ -1,0 +1,549 @@
+Shader "Custom/Common SnowCoverIce"
+{
+    // ---------------------------------------------------------------------------
+    // 属性定义
+    // ---------------------------------------------------------------------------
+    Properties
+    {
+        [Header(Basic Surface)]
+        [Space(5)]
+        [MainTexture] _BaseMap("基础贴图 (Albedo)", 2D) = "white" {}
+        [HideInInspector] _BaseMap_ST("Base Map ST", Vector) = (1,1,0,0)
+        [MainColor]   _BaseColor("基础颜色 (Tint)", Color) = (1, 1, 1, 1)
+        _BaseColorBrightness("基础颜色亮度", Range(0.0, 2.0)) = 1.0
+        _BaseColorSaturation("基础颜色饱和度", Range(0.0, 2.0)) = 1.0
+
+        [Space(10)]
+        // ORMA: R=Occlusion, G=Smoothness, B=Metallic, A=Unused
+        [NoScaleOffset] _ORMAMap("ORMA贴图 (R=AO, G=Smoothness, B=Metallic, A=Unused)", 2D) = "white" {}
+        [Space(5)]
+        _Metallic("金属度", Range(0.0, 1.0)) = 0.0
+        _SmoothnessMin("光滑度最小值", Range(0.0, 1.0)) = 0
+        _SmoothnessMax("光滑度最大值", Range(0.0, 1.0)) = 1
+        _OcclusionStrength("AO 强度", Range(0.0, 1.0)) = 1.0
+
+        [Space(15)]
+        [Header(Normal Map)]
+        [Space(5)]
+        [Toggle(_NORMALMAP)] _UseNormalMap("启用法线贴图", Float) = 0
+        [NoScaleOffset] _BumpMap("法线贴图", 2D) = "bump" {}
+        _BumpScale("法线强度", Range(0.0, 2.0)) = 1.0
+
+        [Space(15)]
+        [Header(Parallax Mapping)]
+        [Space(5)]
+        // [Toggle(_PARALLAXMAP)] _UseParallaxMap("启用视差映射", Float) = 0
+        [NoScaleOffset] _ParallaxMap("深度贴图 (R=Depth, G=Internal Cracks)", 2D) = "black" {}
+        _ParallaxScale("视差强度", Range(0.0, 0.5)) = 0.09
+        _ParallaxSteps("采样层数", Range(1, 64)) = 32
+        _NoiseMap("内部裂隙深度随机噪声 (R)", 2D) = "white" {}
+        _InternalCrackColor("内部裂隙颜色", Color) = (0.5, 0.5, 0.5, 1)
+        _InternalCrackScale("内部裂隙强度", Range(0, 10)) = 5
+        _InternalCrackDistortion("内部裂隙折射/扭曲", Range(0.0, 1.0)) = 0.1
+
+        [Space(15)]
+        [Header(Ice Effects)]
+        [Space(5)]
+        _FresnelColor("菲涅尔颜色", Color) = (1, 1, 1, 1)
+        _FresnelPower("菲涅尔指数", Range(0.1, 20.0)) = 10
+        [Space(5)]
+        _SSSColor("次表面散射颜色", Color) = (0.2, 0.5, 1.0, 1.0)
+        _SSSIntensity("次表面散射强度", Range(0.0, 5.0)) = 1.0
+        _SSSPower("次表面散射指数", Range(1.0, 10.0)) = 2.0
+
+        [Space(15)]
+        [Header(Snow Textures)]
+        [Space(5)]
+        _SnowBaseMap("积雪基础贴图 (Albedo)", 2D) = "white" {}
+        _SnowColor("积雪颜色校色", Color) = (1, 1, 1, 1)
+        [HideInInspector] _SnowBaseMap_ST("Snow Base Map ST", Vector) = (1,1,0,0)
+        [Space(5)]
+        [NoScaleOffset] _SnowORMAMap("积雪ORMA贴图 (R=AO, G=Smoothness, B=Metallic)", 2D) = "white" {}
+        _SnowSmoothnessMin("积雪光滑度最小值", Range(0.0, 1.0)) = 0
+        _SnowSmoothnessMax("积雪光滑度最大值", Range(0.0, 1.0)) = 1
+        _SnowOcclusionStrength("积雪AO 强度", Range(0.0, 1.0)) = 1.0
+        [NoScaleOffset] _SnowBumpMap("积雪法线贴图", 2D) = "bump" {}
+        _SnowBumpScale("积雪法线强度", Range(0.0, 2.0)) = 1.0
+
+        [Space(15)]
+        [Header(Snow Accumulation)]
+        [Space(5)]
+        [Toggle(_SNOW_PIXEL_NORMAL)] _SnowPixelNormal("Use Pixel Normal for Snow", Float) = 0
+        _SnowDirection("积雪方向", Vector) = (0, 1, 0, 0)
+        _SnowOffset("积雪范围偏移", Range(-1.0, 1.0)) = 0.0
+        _SnowTransition("积雪过渡硬度", Float) = 5.0
+        
+        [Space(15)]
+        [Header(Snow Sparkles)]
+        [Space(5)]
+        [Toggle(_SPARKLE)] _UseSparkle("启用雪地闪烁", Float) = 0
+        _SparkleScale("闪烁缩放", Range(10.0, 1000.0)) = 100.0
+        _SparkleIntensity("闪烁强度", Range(0.0, 100.0)) = 40.0
+        _SparkleThreshold("闪烁阈值", Range(0.0, 1.0)) = 0.4
+        
+        [Space(5)]
+        [Toggle(_BAKED_SPARKLE)] _UseBakedSparkle("启用环境闪烁 (Baked模式)", Float) = 0
+        [HDR] _BakedSparkleColor("烘焙闪烁颜色", Color) = (1, 1, 1, 1)
+
+        [Space(15)]
+        [Header(Snow Vertex Offset)]
+        [Space(5)]
+        [Toggle(_SNOW_VERTEX_OFFSET)] _UseSnowVertexOffset("启用积雪顶点偏移", Float) = 0
+        _SnowLevel("积雪程度", Range(0.0, 1.0)) = 0.0
+        _SnowHeight("积雪厚度 (顶点偏移)", Float) = 0.1
+
+        [Space(15)]
+        [Header(Advanced)]
+        [Space(5)]
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull("剔除模式", Float) = 2 // Back
+        
+        [ToggleOff] _SpecularHighlights("Specular Highlights", Float) = 1.0
+        [ToggleOff] _EnvironmentReflections("Environment Reflections", Float) = 1.0
+
+        // 强制 ZWrite 为 On，防止穿透问题。如果确实需要半透明，请手动修改 Shader 或使用 Transparent 版本
+        [HideInInspector] _ZWrite("ZWrite", Float) = 1 // 深度写入开关，强制开启以防止穿透
+    }
+
+    // ---------------------------------------------------------------------------
+    // SubShader
+    // ---------------------------------------------------------------------------
+    SubShader
+    {
+        // RenderPipeline = UniversalPipeline: 仅在 URP 管线下工作
+        // Queue = Geometry: 渲染队列，2000，最先渲染不透明物体
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry" }
+        
+        LOD 300 // 细节级别，用于性能分级
+
+        // -----------------------------------------------------------------------
+        // 全局 HLSL 包含
+        // -----------------------------------------------------------------------
+        HLSLINCLUDE
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl" // URP 核心库
+
+        // User-Define HLSL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        #include "H_Common_SnowCoverIce_Surface.hlsl"
+        // User-Define HLSL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ENDHLSL
+
+        // =======================================================================
+        // Pass 1: ForwardLit (主光照 Pass)
+        // 负责计算物体的主要光照、颜色和纹理
+        // =======================================================================
+        Pass
+        {
+            Name "ForwardLit"                           // Pass 的名称，用于调试
+            Tags { "LightMode" = "UniversalForward" }   // 前向渲染的主 Pass
+
+            Blend One Zero  // 混合模式：完全不透明 (源颜色*1 + 目标颜色*0)
+            ZWrite On       // 开启深度写入，记录物体的深度信息
+            Cull [_Cull]    // 使用属性面板设置的剔除模式
+
+            HLSLPROGRAM
+            #pragma target 4.5                  // 编译目标：DX11 / OpenGL ES 3.1 等现代 GPU
+            #pragma vertex LitPassVertex        // 指定顶点着色器函数名
+            #pragma fragment LitPassFragment    // 指定片元着色器函数名
+
+            // -------------------------------------
+            // 关键字定义 (Keywords)
+            // 用于控制 Shader 的变体，根据材质设置开启或关闭特定功能
+            // -------------------------------------
+            #pragma shader_feature_local _NORMALMAP         // 是否有法线贴图
+            // #pragma shader_feature_local _PARALLAXMAP       // 是否开启视差映射
+            #pragma shader_feature_local _SNOW_VERTEX_OFFSET // 是否开启积雪顶点偏移
+            #pragma shader_feature_local _SNOW_PIXEL_NORMAL // 是否使用像素法线计算积雪
+            #pragma shader_feature_local _SPARKLE           // 是否开启雪地闪烁
+            #pragma shader_feature_local _BAKED_SPARKLE     // 是否开启烘焙环境闪烁
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local _ENVIRONMENTREFLECTIONS_OFF
+            
+            // URP 系统关键字：处理阴影、光照、雾效等
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN // 主光源阴影
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS    // 额外光源
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS              // 额外光源阴影
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT                          // 软阴影
+            #pragma multi_compile_fragment _ _SHADOWS_SHADOWMASK                    // 阴影遮罩 (Shadowmask)
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION                // 屏幕空间环境光遮蔽 (SSAO)
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3 // 贴花 (Decals) 支持
+            #pragma multi_compile_fragment _ _LIGHT_LAYERS      // 光照层
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES     // 光照 Cookie
+            #pragma multi_compile _ _CLUSTERED_RENDERING        // 集群渲染 (Forward+)
+            #pragma multi_compile_fog                   // 雾效
+            #pragma multi_compile _ LIGHTMAP_ON         // 光照贴图
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON  // 动态光照贴图 (Realtime GI)
+            #pragma multi_compile_fragment _ _PROBE_VOLUMES_L1 _PROBE_VOLUMES_L2    // 自适应探针体积 (APV)
+            #pragma multi_compile_instancing            // GPU 实例化
+            #pragma instancing_options renderinglayer   // 渲染层支持
+
+            // 必须先包含 Lighting.hlsl 以获取 DECLARE_LIGHTMAP_OR_SH 等宏定义
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            // 顶点着色器输入结构体
+            struct Attributes
+            {
+                float4 positionOS   : POSITION; // 模型空间顶点位置
+                float3 normalOS     : NORMAL;   // 模型空间法线
+                float4 tangentOS    : TANGENT;  // 模型空间切线
+                float2 uv           : TEXCOORD0; // 第一套 UV 坐标
+                float2 lightmapUV   : TEXCOORD1; // 第二套 UV (用于光照贴图)
+                UNITY_VERTEX_INPUT_INSTANCE_ID // 实例化 ID
+            };
+
+            // 顶点着色器输出 / 片元着色器输入结构体
+            struct Varyings
+            {
+                float4 positionCS   : SV_POSITION; // 裁剪空间位置 (屏幕位置)
+                float3 positionWS   : TEXCOORD0;   // 世界空间位置
+                half3  normalWS     : TEXCOORD1;   // 世界空间法线
+                half4  tangentWS    : TEXCOORD2;   // 世界空间切线
+                float2 uv           : TEXCOORD3;   // UV 坐标
+                
+                #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+                    float4 shadowCoord : TEXCOORD4; // 阴影坐标 (如果需要插值)
+                #endif
+
+                DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 5); // 光照贴图 UV 或 球谐光照数据
+                
+                float fogCoord : TEXCOORD6; // 雾效坐标
+
+                float snowFactor    : TEXCOORD8; // 积雪因子
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID  // 实例化 ID
+                UNITY_VERTEX_OUTPUT_STEREO      // VR 立体渲染支持
+            };
+
+            // User-Define HLSL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            #include "H_Common_SnowCoverIce_Lighting.hlsl"
+            // User-Define HLSL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+            // 顶点着色器函数
+            Varyings LitPassVertex(Attributes IN)
+            {
+                Varyings OUT = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(IN);                // 设置实例化 ID
+                UNITY_TRANSFER_INSTANCE_ID(IN, OUT);        // 传递实例化 ID 到输出
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT); // 初始化 VR 输出
+
+                // 获取世界空间法线用于计算积雪
+                float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                float3 positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+                
+                // 应用积雪顶点偏移
+                float snowFactor = 0;
+                ApplySnowVertexOffset(positionWS, normalWS, snowFactor);
+                OUT.snowFactor = snowFactor;
+
+                // 获取顶点位置信息 (世界空间、裁剪空间等)
+                OUT.positionWS = positionWS;
+                OUT.positionCS = TransformWorldToHClip(positionWS);
+
+                // 重新构建 VertexPositionInputs 以便后续使用 (如阴影坐标)
+                VertexPositionInputs posInputs = (VertexPositionInputs)0;
+                posInputs.positionWS = positionWS;
+                posInputs.positionCS = OUT.positionCS;
+                // 其他字段如果需要可以填充，但 GetShadowCoord 主要使用 positionWS 或 positionCS
+
+                // 获取法线和切线信息 (转换到世界空间)
+                VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS, IN.tangentOS);
+                OUT.normalWS = normalInputs.normalWS;
+                // 存储切线，w 分量用于确定副切线方向
+                OUT.tangentWS = half4(normalInputs.tangentWS, IN.tangentOS.w * GetOddNegativeScale());
+                
+                // 传递原始 UV 坐标，在片元着色器中分别应用 Tiling/Offset
+                OUT.uv = IN.uv;
+
+                // 输出光照贴图 UV 或 SH 数据
+                OUTPUT_LIGHTMAP_UV(IN.lightmapUV, unity_LightmapST, OUT.lightmapUV);
+                OUTPUT_SH(OUT.normalWS, OUT.vertexSH);
+
+                // 计算阴影坐标
+                #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+                    OUT.shadowCoord = GetShadowCoord(posInputs);
+                #endif
+                
+                // 计算雾效因子
+                OUT.fogCoord = ComputeFogFactor(OUT.positionCS.z);
+
+                return OUT;
+            }
+
+            // 片元着色器函数
+            half4 LitPassFragment(Varyings IN) : SV_Target
+            // half4 LitPassFragment(Varyings IN, float facing : VFACE) : SV_Target
+            {
+                // // 双面渲染处理：如果是背面，反转法线和切线
+                // if (facing < 0)
+                // {
+                //     IN.normalWS = -IN.normalWS;
+                //     IN.tangentWS.xyz = -IN.tangentWS.xyz;
+                // }
+
+                UNITY_SETUP_INSTANCE_ID(IN); // 设置实例化 ID
+                
+                // 计算世界空间视线方向
+                half3 viewDirWS = GetWorldSpaceNormalizeViewDir(IN.positionWS);
+
+                SurfaceData surfaceData;
+
+                // 初始化表面数据 (读取贴图、计算属性) - 定义在 zEPH_Optimized_Surface.hlsl
+                InitializeSurfaceData(IN.uv, IN.normalWS, IN.tangentWS, viewDirWS, IN.snowFactor, surfaceData);
+                
+                // 计算最终光照颜色 - 定义在 zEPH_Optimized_Lighting.hlsl
+                return CalculateLitColor(IN, surfaceData);
+            }
+            ENDHLSL
+        }
+
+        // =======================================================================
+        // Pass 2: ShadowCaster (阴影投射 Pass)
+        // 负责将物体渲染到阴影贴图中，使其能产生阴影
+        // =======================================================================
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" } // 告诉 URP 这是阴影投射 Pass
+
+            ZWrite On       // 必须开启深度写入
+            ZTest LEqual    // 深度测试模式
+            ColorMask 0     // 不输出颜色，只写深度
+            Cull [_Cull]    // 跟随剔除设置
+
+            HLSLPROGRAM
+            #pragma target 4.5
+            #pragma vertex ShadowPassVertex
+            #pragma fragment ShadowPassFragment
+
+            #pragma shader_feature_local _SNOW_VERTEX_OFFSET
+            #pragma multi_compile_instancing
+
+            // 必须包含 Lighting.hlsl 以获取 GetMainLight()
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+
+            struct Attributes
+            {
+                float4 positionOS   : POSITION;
+                float3 normalOS     : NORMAL;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings
+            {
+                float4 positionCS   : SV_POSITION;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            // 阴影 Pass 顶点着色器
+            Varyings ShadowPassVertex(Attributes input)
+            {
+                Varyings output;
+                UNITY_SETUP_INSTANCE_ID(input);
+                UNITY_TRANSFER_INSTANCE_ID(input, output);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+
+                // 应用积雪顶点偏移
+                float snowFactor = 0;
+                ApplySnowVertexOffset(positionWS, normalWS, snowFactor);
+
+                // 计算在光源视角下的裁剪空间位置，并应用阴影偏移 (Bias) 以防止自阴影伪影
+                output.positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, GetMainLight().direction));
+                
+                // 处理不同平台的深度反转问题
+                #if UNITY_REVERSED_Z
+                    output.positionCS.z = min(output.positionCS.z, output.positionCS.w * UNITY_NEAR_CLIP_VALUE);
+                #else
+                    output.positionCS.z = max(output.positionCS.z, output.positionCS.w * UNITY_NEAR_CLIP_VALUE);
+                #endif
+
+                output.uv = input.uv;
+                return output;
+            }
+
+            // 阴影 Pass 片元着色器
+            half4 ShadowPassFragment(Varyings input) : SV_TARGET
+            {
+                UNITY_SETUP_INSTANCE_ID(input);
+                
+                return 0; // 不需要输出颜色
+            }
+            ENDHLSL
+        }
+
+        // =======================================================================
+        // Pass 3: DepthOnly (深度预渲染 Pass)
+        // 负责将物体渲染到 _CameraDepthTexture，用于后期处理等
+        // =======================================================================
+        Pass
+        {
+            Name "DepthOnly"
+            Tags { "LightMode" = "DepthOnly" } // 告诉 URP 这是深度预渲染 Pass
+
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0 // 不输出颜色
+            Cull [_Cull]
+
+            HLSLPROGRAM
+            #pragma target 4.5
+            #pragma vertex DepthOnlyVertex
+            #pragma fragment DepthOnlyFragment
+
+            #pragma shader_feature_local _SNOW_VERTEX_OFFSET
+            #pragma multi_compile_instancing
+
+            struct Attributes
+            {
+                float4 positionOS   : POSITION;
+                float3 normalOS     : NORMAL;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings
+            {
+                float4 positionCS   : SV_POSITION;
+                float2 uv           : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+            Varyings DepthOnlyVertex(Attributes input)
+            {
+                Varyings output = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(input);
+                UNITY_TRANSFER_INSTANCE_ID(input, output);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+
+                // 应用积雪顶点偏移
+                float snowFactor = 0;
+                ApplySnowVertexOffset(positionWS, normalWS, snowFactor);
+
+                // 直接转换到裁剪空间
+                output.positionCS = TransformWorldToHClip(positionWS);
+                output.uv = input.uv;
+                return output;
+            }
+
+            half4 DepthOnlyFragment(Varyings input) : SV_TARGET
+            {
+                UNITY_SETUP_INSTANCE_ID(input);
+                
+                return 0;
+            }
+            ENDHLSL
+        }
+
+        // =======================================================================
+        // Pass 4: DepthNormals (深度法线 Pass)
+        // 负责渲染深度和法线到 _CameraDepthNormalsTexture，用于 SSAO 等效果
+        // =======================================================================
+        Pass
+        {
+            Name "DepthNormals"
+            Tags { "LightMode" = "DepthNormals" }
+
+            ZWrite On
+            ZTest LEqual
+            Cull [_Cull]
+
+            HLSLPROGRAM
+            #pragma target 4.5
+            #pragma vertex DepthNormalsVertex
+            #pragma fragment DepthNormalsFragment
+
+            #pragma shader_feature_local _NORMALMAP
+            #pragma multi_compile_instancing
+
+            // 包含 URP 标准 DepthNormalsPass 实现
+            // 注意：它会调用我们在 _Surface.hlsl 中定义的 SampleAlbedoAlpha, SampleNormal, Alpha 函数
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl"
+            
+            ENDHLSL
+        }
+
+        // =======================================================================
+        // Pass 5: Meta (光照烘焙 Pass)
+        // 负责为 Unity 的光照烘焙系统提供材质数据 (Albedo, Emission)
+        // =======================================================================
+        Pass
+        {
+            Name "Meta"
+            Tags { "LightMode" = "Meta" } // 告诉 Unity 这是用于提取烘焙数据的 Pass
+
+            Cull Off // 烘焙时通常不剔除
+
+            HLSLPROGRAM
+            #pragma target 4.5
+            #pragma vertex VertexMeta
+            #pragma fragment FragmentMeta
+
+            #pragma shader_feature_local _SNOW_VERTEX_OFFSET
+
+            // 以下可写入HLSL头文件,
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
+
+            struct Attributes
+            {
+                float4 positionOS   : POSITION;
+                float3 normalOS     : NORMAL;
+                float2 uv           : TEXCOORD0;
+                float2 lightmapUV   : TEXCOORD1;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings
+            {
+                float4 positionCS   : SV_POSITION;
+                float2 uv           : TEXCOORD0;
+                float snowFactor    : TEXCOORD3;
+            };
+
+            Varyings VertexMeta(Attributes input)
+            {
+                Varyings OUT = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(input);
+                
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+
+                // 应用积雪顶点偏移
+                float snowFactor = 0;
+                ApplySnowVertexOffset(positionWS, normalWS, snowFactor);
+                OUT.snowFactor = snowFactor;
+
+                // 使用 UnityMetaVertexPosition 计算烘焙所需的特殊位置
+                float3 positionOS = TransformWorldToObject(positionWS);
+                OUT.positionCS = UnityMetaVertexPosition(positionOS, input.lightmapUV, input.lightmapUV, unity_LightmapST, unity_DynamicLightmapST);
+                
+                OUT.uv = input.uv;
+                return OUT;
+            }
+
+            half4 FragmentMeta(Varyings IN) : SV_Target
+            {
+                SurfaceData surfaceData;
+
+                float dummySnowFactor = IN.snowFactor;
+                // Meta Pass 不需要视差偏移，传默认视线方向
+                InitializeSurfaceData(IN.uv, half3(0,1,0), half4(1,0,0,1), half3(0,1,0), dummySnowFactor, surfaceData);
+
+                MetaInput metaInput = (MetaInput)0;
+                metaInput.Albedo = surfaceData.albedo;
+                metaInput.Emission = surfaceData.emission;
+                return UnityMetaFragment(metaInput);
+            }
+            ENDHLSL
+        }
+    }
+    
+    FallBack "Universal Render Pipeline/Lit"
+}

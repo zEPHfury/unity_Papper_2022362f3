@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Common ICE
+  m_Shader: {fileID: 4800000, guid: 5c18b07e11dd4e241b58b85c3a17e401, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _NORMALMAP
+  m_InvalidKeywords:
+  - _PARALLAXMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: fc698a07601fa0744a105f0a9d536fa7, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 2a014f2511f80094099fde69851d63ab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: b432228471a7825459b16cedbbd31909, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMAMap:
+        m_Texture: {fileID: 2800000, guid: 3615f8c3669a5eb46ae55a3d54e61c36, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 2800000, guid: 33dc054375704db4d9ccd92cc6b72f7e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BaseColorBrightness: 1
+    - _BaseColorSaturation: 1
+    - _BumpScale: 1
+    - _Cull: 2
+    - _EnvironmentReflections: 1
+    - _FresnelPower: 20
+    - _InternalCrackDistortion: 0.1
+    - _InternalCrackScale: 5
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _ParallaxScale: 0.09
+    - _ParallaxSteps: 32
+    - _SSSIntensity: 1
+    - _SSSPower: 2
+    - _SmoothnessMax: 1
+    - _SmoothnessMin: 0.9
+    - _SpecularHighlights: 1
+    - _UseNormalMap: 1
+    - _UseParallaxMap: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InternalCrackColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SSSColor: {r: 0.19999996, g: 0.5, b: 1, a: 1}
+  m_BuildTextureStacks: []
